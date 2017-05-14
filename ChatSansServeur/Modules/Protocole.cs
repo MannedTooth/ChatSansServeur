@@ -3,6 +3,10 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Modeles;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Net.NetworkInformation;
+    using System.Threading;
 
     /// <summary>
     /// Protocole utilisant UDP 50000 permettant de clavarder avec plusieurs utilisateurs sans avoir
@@ -18,6 +22,16 @@
         private static EtatApplication _etatApplication;
 
         /// <summary>
+        /// Permet d'annuler toutes les tâches et les connexions
+        /// </summary>
+        private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
+
+        /// <summary>
+        /// Permet d'obtenir rapidement le Token de Cts
+        /// </summary>
+        private static CancellationToken Ct => Cts.Token;
+
+        /// <summary>
         /// Permet de vérifier si le nom d'utilisateur est déjà utilisé sur le réseau et de démarrer
         /// l'écoute sur le port 50000 UDP pour répondre au demande des autres utilisateurs. Durant
         /// le processus de connexion, etatApplication.ConnexionEnCours est égal à vrai. Si le nom
@@ -31,6 +45,11 @@
         public static async void Connexion(EtatApplication etatApplication)
         {
             _etatApplication = etatApplication;
+
+            //jai ajouter ces 3 trucs la car cest comme ca que stephane le fait dans son exemple
+            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            socket.EnableBroadcast = true;
+            socket.Bind(new IPEndPoint(IPAddress.Any, 50000));
 
             await Task.Delay(1);
 
