@@ -1,0 +1,32 @@
+﻿<Application x:Class="ChatSansServeur.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vues="clr-namespace:ChatSansServeur.Vues"
+             xmlns:vueModeles="clr-namespace:ChatSansServeur.VueModeles"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!-- Fait le lien entre VueModeleConnexion et VueConnexion -->
+        <DataTemplate DataType="{x:Type vueModeles:VueModeleConnexion}">
+            <vues:VueConnexion />
+        </DataTemplate>
+        <!-- Fait le lien entre VueModeleChat et VueChat -->
+        <DataTemplate DataType="{x:Type vueModeles:VueModeleChat }">
+            <vues:VueChat />
+        </DataTemplate>
+        <!-- Fait le lien entre VueModeleConnexionEnCours et VueConnexionEnCours -->
+        <DataTemplate DataType="{x:Type vueModeles:VueModeleConnexionEnCours }">
+            <vues:VueConnexionEnCours />
+        </DataTemplate>
+        <!-- Définit en template lorsque le Textbox contient une valeur invalide -->
+        <ControlTemplate x:Key="ValidationTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Border BorderBrush="Red" BorderThickness="2">
+                    <AdornedElementPlaceholder Margin="1" />
+                </Border>
+                <Grid ToolTip="{Binding Path=/ErrorContent}" Background="Red" Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}" Margin="2">
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White">!</TextBlock>
+                </Grid>
+            </StackPanel>
+        </ControlTemplate>
+    </Application.Resources>
+</Application>
